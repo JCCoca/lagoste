@@ -3,7 +3,11 @@
 class DataTableRepository
 {
     protected Connection $connection;
+
     protected string $table;
+    protected string $select;
+    protected string $join;
+    protected string $where;
     protected bool $softDelete;
 
     protected int $draw;
@@ -19,19 +23,23 @@ class DataTableRepository
 
     protected object $formatData;
     
-    public function __construct(array $request, string $table, bool $softDelete = false)
+    public function __construct(string $table, bool $softDelete = true)
     {
         $this->connection = new Connection();
+
         $this->table = $table;
+        $this->select = '';
+        $this->join = '';
+        $this->where = '';
         $this->softDelete = $softDelete;
 
-        $this->draw = (int) filter_var(@$request['draw'], FILTER_VALIDATE_INT) ?? 1;
-        $this->start = (int) filter_var(@$request['start'], FILTER_VALIDATE_INT) ?? 0;
-        $this->length = (int) filter_var(@$request['length'], FILTER_VALIDATE_INT) ?? 10;
-        $this->search = htmlspecialchars(strip_tags(@$request['search']['value']), ENT_QUOTES, 'UTF-8') ?? '';
-        $this->columns = (array) @$request['columns'] ?? [];
-        $this->orderColumn = (int) filter_var(@$request['order'][0]['column'], FILTER_VALIDATE_INT) ?? 0;
-        $this->orderDir = htmlspecialchars(strip_tags(@$request['order'][0]['dir']), ENT_QUOTES, 'UTF-8') ?? 'asc';
+        $this->draw = (int) filter_var(@$_REQUEST['draw'], FILTER_VALIDATE_INT) ?? 1;
+        $this->start = (int) filter_var(@$_REQUEST['start'], FILTER_VALIDATE_INT) ?? 0;
+        $this->length = (int) filter_var(@$_REQUEST['length'], FILTER_VALIDATE_INT) ?? 10;
+        $this->search = htmlspecialchars(strip_tags(@$_REQUEST['search']['value']), ENT_QUOTES, 'UTF-8') ?? '';
+        $this->columns = (array) @$_REQUEST['columns'] ?? [];
+        $this->orderColumn = (int) filter_var(@$_REQUEST['order'][0]['column'], FILTER_VALIDATE_INT) ?? 0;
+        $this->orderDir = htmlspecialchars(strip_tags(@$_REQUEST['order'][0]['dir']), ENT_QUOTES, 'UTF-8') ?? 'asc';
 
         $this->columnName = [];
 
@@ -47,6 +55,36 @@ class DataTableRepository
         $this->searchConditions = implode(' OR ', array_map(fn($col) => "{$col} LIKE :search", $columns));
     }
 
+    public function select(string $select): void
+    {
+        $this->select .= $select;
+    }
+
+    public function join(string $table, string $column1, string $comparator, string $column2): void
+    {
+        $this->join .= " INNER JOIN {$table} ON {$column1} {$comparator} {$column2}";
+    }
+
+    public function leftJoin(string $table, string $column1, string $comparator, string $column2): void
+    {
+        $this->join .= " LEFT JOIN {$table} ON {$column1} {$comparator} {$column2}";
+    }
+
+    public function where(string $a, string $comparator, string $b): void
+    {
+        $this->where .= " AND {$a} {$comparator} {$b}";
+    }
+
+    public function orWhere(string $a, string $comparator, string $b): void
+    {
+        $this->where .= " OR {$a} {$comparator} {$b}";
+    }
+
+    public function softDelete(bool $softDelete): void 
+    {
+        $this->softDelete = $softDelete;
+    }
+
     public function setColumnName(array $columnName): void
     {
         $this->columnName = $columnName;
@@ -59,13 +97,18 @@ class DataTableRepository
 
     public function get(): array
     {
-        $totalQuery = $this->connection->query("SELECT COUNT(*) AS total FROM {$this->table}");
+        if ($this->softDelete) {
+            $totalQuery = $this->connection->query("SELECT COUNT(*) AS total FROM {$this->table} {$this->join} WHERE {$this->table}.excluido_em IS NULL {$this->where}");
+        } else {
+            $totalQuery = $this->connection->query("SELECT COUNT(*) AS total FROM {$this->table} {$this->join} WHERE 1 = 1 {$this->where}");
+        }
         $totalRecords = $totalQuery->fetch()->total;
 
-        $sql = "SELECT * FROM {$this->table} WHERE 1 = 1";
+        $select = !empty($this->select) ? $this->select : '*';
+        $sql = "SELECT {$select} FROM {$this->table} {$this->join} WHERE 1 = 1 {$this->where}";
 
         if ($this->softDelete) {
-            $sql .= " AND excluido_em IS NULL";
+            $sql .= " AND {$this->table}.excluido_em IS NULL";
         }
 
         if (!empty($this->search)) {

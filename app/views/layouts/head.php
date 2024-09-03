@@ -26,4 +26,4 @@
 <script src="<?= asset('vendor/dataTables/datatables.min.js'); ?>"></script>
 
 <!-- DataTables Custom -->
-<script src="<?= asset('js/dataTables.js?1'); ?>"></script>
+<script src="<?= asset('js/dataTables.js'); ?>"></script>

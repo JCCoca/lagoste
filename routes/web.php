@@ -18,3 +18,11 @@ Route::setPost('admin/categoria/cadastrar', actions('admin/categoria/store'), 'a
 Route::setGet('admin/categoria/editar', pages('admin/categoria/edit'), 'auth');
 Route::setPost('admin/categoria/editar', actions('admin/categoria/update'), 'auth');
 Route::setPost('admin/categoria/excluir', actions('admin/categoria/destroy'), 'auth');
+
+Route::setGet('admin/produto', pages('admin/produto/index'), 'auth');
+Route::setGet('admin/produto/listar', actions('admin/produto/list'), 'auth');
+Route::setGet('admin/produto/cadastrar', pages('admin/produto/create'), 'auth');
+Route::setPost('admin/produto/cadastrar', actions('admin/produto/store'), 'auth');
+Route::setGet('admin/produto/editar', pages('admin/produto/edit'), 'auth');
+Route::setPost('admin/produto/editar', actions('admin/produto/update'), 'auth');
+Route::setPost('admin/produto/excluir', actions('admin/produto/destroy'), 'auth');

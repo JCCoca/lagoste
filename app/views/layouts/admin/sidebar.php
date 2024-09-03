@@ -22,7 +22,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="" class="nav-link text-white <?= $active === 'produto' ? 'active' : ''; ?>">
+            <a href="<?= route('admin/produto'); ?>" class="nav-link text-white <?= $active === 'produto' ? 'active' : ''; ?>">
                 <i class="fa-regular fa-boxes-stacked me-2"></i> Produtos
             </a>
         </li>

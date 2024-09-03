@@ -2,7 +2,7 @@
 
 require 'app/repositories/DataTableRepository.php';
 
-$dataTable = new DataTableRepository($_GET, 'categoria', true);
+$dataTable = new DataTableRepository('categoria');
 
 $dataTable->formatData(function($data){
     return [

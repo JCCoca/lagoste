@@ -1,0 +1,20 @@
+RewriteEngine on
+
+Options -Indexes
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?xpage=/$1 [L,QSA]
+
+ErrorDocument 400 /lagoste/app/views/errors/html/400.html
+ErrorDocument 401 /lagoste/app/views/errors/html/401.html
+ErrorDocument 403 /lagoste/app/views/errors/html/403.html
+ErrorDocument 404 /lagoste/app/views/errors/html/404.html
+ErrorDocument 408 /lagoste/app/views/errors/html/408.html
+ErrorDocument 500 /lagoste/app/views/errors/html/500.html
+ErrorDocument 503 /lagoste/app/views/errors/html/503.html
+
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>

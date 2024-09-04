@@ -4,8 +4,9 @@ require 'app/repositories/DataTableRepository.php';
 
 $dataTable = new DataTableRepository('produto');
 
-$dataTable->select('produto.*, categoria.nome AS nome_categoria');
-$dataTable->join('categoria', 'produto.id_categoria', '=', 'categoria.id');
+$dataTable
+    ->select('produto.*, categoria.nome AS nome_categoria')
+    ->join('categoria', 'produto.id_categoria', '=', 'categoria.id');
 
 $dataTable->formatData(function($data){
     return [

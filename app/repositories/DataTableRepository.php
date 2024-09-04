@@ -55,29 +55,34 @@ class DataTableRepository
         $this->searchConditions = implode(' OR ', array_map(fn($col) => "{$col} LIKE :search", $columns));
     }
 
-    public function select(string $select): void
+    public function select(string $select): object
     {
         $this->select .= $select;
+        return $this;
     }
 
-    public function join(string $table, string $column1, string $comparator, string $column2): void
+    public function join(string $table, string $column1, string $comparator, string $column2): object
     {
         $this->join .= " INNER JOIN {$table} ON {$column1} {$comparator} {$column2}";
+        return $this;
     }
 
-    public function leftJoin(string $table, string $column1, string $comparator, string $column2): void
+    public function leftJoin(string $table, string $column1, string $comparator, string $column2): object
     {
         $this->join .= " LEFT JOIN {$table} ON {$column1} {$comparator} {$column2}";
+        return $this;
     }
 
-    public function where(string $a, string $comparator, string $b): void
+    public function where(string $a, string $comparator, string $b): object
     {
         $this->where .= " AND {$a} {$comparator} {$b}";
+        return $this;
     }
 
-    public function orWhere(string $a, string $comparator, string $b): void
+    public function orWhere(string $a, string $comparator, string $b): object
     {
         $this->where .= " OR {$a} {$comparator} {$b}";
+        return $this;
     }
 
     public function softDelete(bool $softDelete): void 

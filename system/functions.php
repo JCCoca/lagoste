@@ -157,6 +157,8 @@ function input(string $method = 'GET', string $key, string $type = 'string'): st
         case 'double':
         case 'float':
             return floatval(filter_var($value, FILTER_VALIDATE_FLOAT));
+        case 'money':
+            return floatval(filter_var(str_replace(',', '.', str_replace('.', '', $value)), FILTER_VALIDATE_FLOAT));
         case 'email':
             return filter_var($value, FILTER_VALIDATE_EMAIL);
         case 'url':

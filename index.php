@@ -2,6 +2,7 @@
 
 require_once 'config/app.php';
 require_once 'system/Route.php';
+require_once 'system/FileManager.php';
 require_once 'system/functions.php';
 require_once 'routes/web.php';
 require_once 'database/Connection.php';

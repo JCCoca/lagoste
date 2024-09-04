@@ -2,7 +2,9 @@
 
 <form action="<?= $action; ?>" method="POST" autocomplete="off">
     <div class="mb-3">
-        <label for="nome" class="form-label">Nome</label>
+        <label for="nome" class="form-label">
+            Nome<span class="text-danger">*</span>
+        </label>
         <input 
             type="text" 
             name="nome" 

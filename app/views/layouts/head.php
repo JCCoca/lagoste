@@ -21,6 +21,9 @@
 <!-- JQuery -->
 <script src="<?= asset('vendor/jquery/jquery.min.js'); ?>"></script>
 
+<!-- JQuery Mask -->
+<script src="<?= asset('vendor/jquery-mask/jquery.mask.min.js'); ?>"></script>
+
 <!-- DataTables -->
 <link rel="stylesheet" href="<?= asset('vendor/dataTables/datatables.min.css'); ?>">
 <script src="<?= asset('vendor/dataTables/datatables.min.js'); ?>"></script>

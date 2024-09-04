@@ -1,10 +1,30 @@
 <?php
 
-$nome = input('post', 'nome');
+$titulo = input('post', 'titulo');
+$valor = input('post', 'valor', 'money');
+$quantidade = input('post', 'quantidade', 'integer');
+$id_categoria = input('post', 'id_categoria', 'integer');
+$descricao = input('post', 'descricao');
 
-if (!empty($nome)) {
+if (
+    !empty($titulo)
+    and !empty($valor)
+    and !empty($quantidade)
+    and !empty($id_categoria)
+    and !empty($descricao)
+    and isset($_FILES['imagem'])
+) {
+    $fileManager = new FileManager();
+
+    $dirImagem = $fileManager->upload($_FILES['imagem']);
+
     $idProduto = DB::create('produto', [
-        'nome' => $nome,
+        'titulo' => $titulo,
+        'valor' => $valor,
+        'quantidade' => $quantidade,
+        'id_categoria' => $id_categoria,
+        'imagem' => $dirImagem,
+        'descricao' => $descricao,
         'criado_em' => date('Y-m-d H:i:s')
     ]);
 

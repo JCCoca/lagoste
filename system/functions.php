@@ -25,6 +25,11 @@ function asset(string $dirFile): string
     return getHost().APP_BASE_PATH.'/public/assets/'.$dirFile;
 }
 
+function storage(string $dirFile): string
+{
+    return getHost().APP_BASE_PATH.$dirFile;
+}
+
 function layout(string $dirFile, array $data = []): void
 {
     foreach ($data as $key => $value) {

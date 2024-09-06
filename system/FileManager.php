@@ -50,6 +50,7 @@ class FileManager
             throw new \Exception('Arquivo não encontrado.');
         }
 
+        // Destroi o arquivo
         if (!unlink($this->rootPath.$filePath)) {
             throw new \Exception('Erro ao excluir o arquivo.');
         }

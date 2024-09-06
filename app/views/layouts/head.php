@@ -30,3 +30,6 @@
 
 <!-- DataTables Custom -->
 <script src="<?= asset('js/dataTables.js'); ?>"></script>
+
+<!-- Utils JS -->
+<script src="<?= asset('js/utils.js'); ?>"></script>

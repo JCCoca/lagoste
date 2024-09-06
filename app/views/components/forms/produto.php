@@ -71,14 +71,14 @@
                         >
                             <?= $categoria->nome; ?>
                         </option>
-                    <?php endforeach; ?>
+                    <?php endforeach ?>
                 </select>
             </div>
         </div>
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="imagem" class="form-label">
-                    Imagem<?php if ($requiredImagem): ?><span class="text-danger">*</span><?php endif; ?>
+                    Imagem<?php if ($requiredImagem): ?><span class="text-danger">*</span><?php endif ?>
                 </label>
                 <input 
                     type="file" 

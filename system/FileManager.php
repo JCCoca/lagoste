@@ -2,14 +2,16 @@
 
 class FileManager
 {
+    private string $rootPath;
     private string $storagePath;
 
     public function __construct()
     {
+        $this->rootPath = $_SERVER["DOCUMENT_ROOT"].APP_BASE_PATH;
         $this->storagePath = '/public/storages';
     }
 
-    public function upload(array $file): string
+    public function upload(array $file, ?string $subpath = null): string
     {
         // Validação básica do arquivo
         if (!isset($file['tmp_name'], $file['name']) or $file['error'] !== UPLOAD_ERR_OK) {
@@ -18,14 +20,13 @@ class FileManager
 
         // Definindo os subdiretórios ano/mês/dia
         $subDirectory = date('Y').'/'.date('m').'/'.date('d');
-        $destinationDir = $this->storagePath.'/'.$subDirectory;
-        
-        if (is_dir($destinationDir)) {
-            mkdir($destinationDir, 0777, true);
+        if (!empty($subpath)) {
+            $subDirectory = $subpath.'/'.$subDirectory;
         }
+        $destinationDir = $this->storagePath.'/'.$subDirectory;
 
         // Criar diretórios caso não existam
-        if (!is_dir($destinationDir) and !mkdir($destinationDir, 0777, true) and !is_dir($destinationDir)) {
+        if (!is_dir($this->rootPath.$destinationDir) and !mkdir($this->rootPath.$destinationDir, 0777, true) and !is_dir($this->rootPath.$destinationDir)) {
             throw new \Exception('Não foi possível criar o diretório de destino.');
         }
 
@@ -35,7 +36,7 @@ class FileManager
         $destinationPath = $destinationDir.'/'.$fileName;
 
         // Movendo o arquivo para o destino final
-        if (!move_uploaded_file($file['tmp_name'], $destinationPath)) {
+        if (!move_uploaded_file($file['tmp_name'], $this->rootPath.$destinationPath)) {
             throw new \Exception('Erro ao mover o arquivo para o destino.');
         }
 
@@ -45,11 +46,11 @@ class FileManager
     public function destroy(string $filePath): bool
     {
         // Verifica se o arquivo existe e tenta excluí-lo
-        if (!file_exists($filePath)) {
+        if (!file_exists($this->rootPath.$filePath)) {
             throw new \Exception('Arquivo não encontrado.');
         }
 
-        if (!unlink($filePath)) {
+        if (!unlink($this->rootPath.$filePath)) {
             throw new \Exception('Erro ao excluir o arquivo.');
         }
 

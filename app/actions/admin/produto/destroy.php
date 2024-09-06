@@ -10,6 +10,14 @@ if (!empty($id)) {
     ]);
 
     if ($result !== false) {
+        $produto = DB::query('SELECT * FROM produto WHERE id = :id', [
+            ':id' => $id
+        ])->fetch();
+
+        $fileManager = new FileManager();
+
+        $fileManager->destroy($produto->imagem);
+        
         redirect('admin/produto', [
             'success' => 'Exclução realizada com sucesso!'
         ]);

@@ -42,19 +42,19 @@
             }, {
                 name: 'titulo',
                 data: 'titulo',
-                width: '25%'
+                width: '20%'
             }, {
                 name: 'valor',
                 data: 'valor',
-                width: '20%'
+                width: '15%'
             }, {
                 name: 'quantidade',
                 data: 'quantidade',
-                width: '20%'
+                width: '15%'
             }, {
                 name: 'nome_categoria',
                 data: 'nome_categoria',
-                width: '20%'
+                width: '15%'
             },{
                 name: null,
                 data: null,

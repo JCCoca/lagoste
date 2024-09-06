@@ -16,7 +16,7 @@ if (
 ) {
     $fileManager = new FileManager();
 
-    $dirImagem = $fileManager->upload($_FILES['imagem']);
+    $dirImagem = $fileManager->upload($_FILES['imagem'], 'produto');
 
     $idProduto = DB::create('produto', [
         'titulo' => $titulo,
